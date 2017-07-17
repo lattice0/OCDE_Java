@@ -1,0 +1,37 @@
+{
+  "foxbit":{
+    "meta": {
+      "name":"Foxbit",
+      "country":"Brazil",
+      "url":"foxbit.com.br",
+      "api":{
+        "BTC": {"BRL": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"}
+      }
+    },
+    "high":"high",
+    "low":"low",
+    "last":"last",
+    "buy":"buy",
+    "sell":"sell",
+    "volume_coin":"volume_coin",
+    "volume_currency":"volume_currency"
+  },
+  "mercado_bitcoin":{
+    "meta": {
+      "name":"Mercado Bitcoin",
+      "country":"Brazil",
+      "url":"mercadobitcoin.com.br",
+      "api":{
+        "BTC":{"BRL": "mercadobitcoin.net/api/ticker"},
+        "LTC":{"BRL": "mercadobitcoin.net/api/ticker_litecoin"}
+      }
+    },
+    "high":"ticker.high",
+    "low":"ticker.low",
+    "last":"ticker.last",
+    "buy":"ticker.buy",
+    "sell":"ticker.sell",
+    "volume_coin":"ticker.vol",
+    "volume_currency":""
+  }
+}
