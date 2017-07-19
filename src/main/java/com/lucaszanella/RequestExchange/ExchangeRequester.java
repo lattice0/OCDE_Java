@@ -1,13 +1,15 @@
 package com.lucaszanella.RequestExchange;
 
 
+import com.lucaszanella.JsonNavigator.JsonNavigator;
 import okhttp3.*;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
+import javax.json.*;
 import java.io.FileReader;
 import java.io.StringReader;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ExchangeRequester {
@@ -19,10 +21,10 @@ public class ExchangeRequester {
     private String ExchangeCurrency;
     //private ExchangeJsonModel Meta;
     private java.io.Reader Reader;
-
+    private JsonObject exchangeObject;
     private static OkHttpClient httpsClient = new OkHttpClient.Builder()
-                                    //.addNetworkInterceptor(new UserAgentInterceptor(userAgent))
-                                    .build();
+            //.addNetworkInterceptor(new UserAgentInterceptor(userAgent))
+            .build();
     private Request okhttpApiRequester;
 
     /*
@@ -31,9 +33,9 @@ public class ExchangeRequester {
     public ExchangeRequester(String Exchange, String Coin, String Currency) {
         try {
             Reader = new FileReader("exchanges.json");
-            javax.json.JsonReader jsonReader = Json.createReader(Reader);
+            JsonReader jsonReader = Json.createReader(Reader);
             JsonObject exchangesList = jsonReader.readObject();
-            JsonObject exchangeObject = exchangesList.getJsonObject("foxbit");
+            this.exchangeObject = exchangesList.getJsonObject(Exchange);
             JsonObject exchangeMetadata = exchangeObject.getJsonObject("meta");
             this.ExchangeName = exchangeMetadata.getString("name");
             this.ExchangeCoin = Coin;
@@ -53,14 +55,39 @@ public class ExchangeRequester {
     /*
         Does the actual price request, parses it and returns in the format "ExchangeInfo"
      */
-    public ExchangeInfo Request() throws Exception {
-        Response r  = httpsClient.newCall(okhttpApiRequester).execute();
+    public Map<String, Number> Request() throws Exception {
+        Response r = httpsClient.newCall(okhttpApiRequester).execute();
         String json = r.body().string();
         System.out.println(json);
 
         JsonReader jsonReader = Json.createReader(new StringReader(json));
-        JsonObject jobj = jsonReader.readObject();
-        System.out.println(jobj.getJsonNumber("high"));
-        return new ExchangeInfo();
+        JsonObject jsonObject = jsonReader.readObject();
+        //ExchangeInfo e = new ExchangeInfo();
+        Map<String, Number> exchangeInfo = new HashMap<>();
+        /*
+            Let's iterate through the exchangeObject to see where to find
+            each node in the api response from each exchange. For example,
+            MercadoBitcoin's 'high' price is found at its json response by
+            navigating in ticker and then high, so MercadoBitcoin's entry
+            in exchanges.json says that 'high' is located at 'ticker.high'
+         */
+        for (Map.Entry<String, JsonValue> entry : this.exchangeObject.entrySet()) {
+            String key = entry.getKey();
+            JsonValue value = entry.getValue();
+            if (!key.equals("meta")) { //Ignore the key 'meta', we're intersted in the high,low,... keys
+                JsonValue jsonValue = JsonNavigator.Navigate(value.toString(), jsonObject);
+                if (jsonValue!=null && jsonValue.getValueType().equals(JsonValue.ValueType.NUMBER)) {
+                    Number n = ((Number) jsonValue);
+                    exchangeInfo.put(key, n);
+                } else if (jsonValue==null){
+                    //Null returned, couldn't navigate to this on json
+                } else {
+                    //Throw error, no number returned or can't be converted to number
+                }
+                break;
+            }
+            //System.out.println("key: " + key + ", value: " + value);
+        }
+        return exchangeInfo;
     }
 }

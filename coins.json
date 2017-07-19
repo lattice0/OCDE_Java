@@ -1,0 +1,14 @@
+{
+  "BTC": {
+    "name": "Bitcoin",
+    "project_url": ["bitcoin.org"]
+  },
+  "ETH": {
+    "name": "Ethereum",
+    "project_url": ["ethereumproject.org"]
+  },
+  "DASH": {
+    "name": "Dash",
+    "project_url": ["dash.org"]
+  }
+}
