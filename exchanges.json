@@ -13,8 +13,8 @@
     "last":"last",
     "buy":"buy",
     "sell":"sell",
-    "volume_coin":"volume_coin",
-    "volume_currency":"volume_currency"
+    "volume_coin":"",
+    "volume_currency":"vol_brl"
   },
   "mercado_bitcoin":{
     "meta": {

@@ -16,13 +16,12 @@ public class Main {
         System.out.println("Hello, World");
         ExchangeRequester r = new ExchangeRequester("foxbit","BTC","BRL");
         try {
-            //Map<String, String> json = r.Request();
-            //JsonElement a = ExchangeRequester.JsonParser.toJsonTree(json, String.class);
-            //System.out.println(a);
-            //System.out.println(json);
+            Map<String, Number> json = r.Request();
+            System.out.println("json is :" + json);
         } catch(Exception e) {
 
         }
+        /*
         String j = "{\n" +
                 "\t\"a\": {\n" +
                 "\t\t\"b\": {\n" +
@@ -38,6 +37,7 @@ public class Main {
         JsonObject jj = jsonReader.readObject();
         JsonValue jjj = JsonNavigator.Navigate("g.h", jj);
         System.out.println(jjj);
+        */
     }
 
 }

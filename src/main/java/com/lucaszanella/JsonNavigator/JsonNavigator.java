@@ -23,10 +23,11 @@ public class JsonNavigator {
         The output of JsonValue Navigate("first_node.second_node.third_node", jsonObject) is "value"
      */
     public static JsonValue Navigate(String path, JsonObject jsonObject) {
-        System.out.println("Navigating through " + path + ", jsonObject: " + jsonObject);
+        System.out.println("Navigating through " + path);
         JsonObject o = jsonObject;
         String[] nodes = path.split("\\."); //Do I really need to remove "" from the keys???
         for (String node: nodes) {
+            //System.out.println("node: " + node);
             node = node.replace("\"", "");
             JsonValue.ValueType current = o.get(node).getValueType();
             if (current.equals(JsonValue.ValueType.OBJECT)) {
@@ -35,6 +36,7 @@ public class JsonNavigator {
             } else if (current.equals(JsonValue.ValueType.STRING)) {
                 return o.getJsonString(node);
             } else if (current.equals(JsonValue.ValueType.NUMBER)) {
+                //System.out.println("is number: " + o.getJsonNumber(node));
                 return o.getJsonNumber(node);
             } else if (current.equals(JsonValue.ValueType.ARRAY)) {
                 //deal with this

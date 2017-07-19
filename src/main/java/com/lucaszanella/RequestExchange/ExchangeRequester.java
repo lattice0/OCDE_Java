@@ -62,7 +62,7 @@ public class ExchangeRequester {
 
         JsonReader jsonReader = Json.createReader(new StringReader(json));
         JsonObject jsonObject = jsonReader.readObject();
-        //ExchangeInfo e = new ExchangeInfo();
+
         Map<String, Number> exchangeInfo = new HashMap<>();
         /*
             Let's iterate through the exchangeObject to see where to find
@@ -73,18 +73,19 @@ public class ExchangeRequester {
          */
         for (Map.Entry<String, JsonValue> entry : this.exchangeObject.entrySet()) {
             String key = entry.getKey();
-            JsonValue value = entry.getValue();
-            if (!key.equals("meta")) { //Ignore the key 'meta', we're intersted in the high,low,... keys
-                JsonValue jsonValue = JsonNavigator.Navigate(value.toString(), jsonObject);
-                if (jsonValue!=null && jsonValue.getValueType().equals(JsonValue.ValueType.NUMBER)) {
-                    Number n = ((Number) jsonValue);
-                    exchangeInfo.put(key, n);
-                } else if (jsonValue==null){
-                    //Null returned, couldn't navigate to this on json
-                } else {
-                    //Throw error, no number returned or can't be converted to number
+            if (!key.equals("meta")) { //Ignore the key 'meta', we're interested in the high,low,... keys
+                JsonString value = this.exchangeObject.getJsonString(key);
+                if (!"".equals(value.getString())) {
+                    JsonValue jsonValue = JsonNavigator.Navigate(value.getString(), jsonObject);
+                    if (jsonValue!=null && jsonValue.getValueType().equals(JsonValue.ValueType.NUMBER)) {
+                        Number n = ((JsonNumber) jsonValue).doubleValue();
+                        exchangeInfo.put(key, n);
+                    } else if (jsonValue==null){
+                        //Null returned, couldn't navigate to this on json
+                    } else {
+                        //Throw error, no number returned or can't be converted to number
+                    }
                 }
-                break;
             }
             //System.out.println("key: " + key + ", value: " + value);
         }
