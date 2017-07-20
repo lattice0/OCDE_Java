@@ -5,6 +5,7 @@
       "country":"Brazil",
       "url":"foxbit.com.br",
       "pairs":[],
+      "exceptions":[],
       "api":{
         "BTC": {"BRL": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"}
       }
@@ -23,6 +24,7 @@
       "country":"Brazil",
       "url":"mercadobitcoin.com.br",
       "pairs":[],
+      "exceptions":[],
       "api":{
         "BTC":{"BRL": "mercadobitcoin.net/api/ticker"},
         "LTC":{"BRL": "mercadobitcoin.net/api/ticker_litecoin"}
@@ -47,6 +49,7 @@
         "SAN/BTC","SAN/ETH","OMG/USD","OMG/BTC","OMG/ETH","DASH/USD",
         "DASH/BTC","XRP/USD","XRP/BTC","XMR/USD","XMR/BTC","BCU/USD",
         "BCU/BTC","RRT/USD","RRT/BTC","BCC/USD","BCC/BTC"],
+      "exceptions":[],
       "api":{
         "pair":"api.bitfinex.com/v2/ticker/t{1}{2}"
       }

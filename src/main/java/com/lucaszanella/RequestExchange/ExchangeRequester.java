@@ -19,6 +19,7 @@ public class ExchangeRequester {
     private String ExchangeCoin;
     private String ExchangeApiPath;
     private String ExchangeCurrency;
+    private String[] Pairs;
     //private ExchangeJsonModel Meta;
     private java.io.Reader Reader;
     private JsonObject exchangeObject;
@@ -40,6 +41,7 @@ public class ExchangeRequester {
             this.ExchangeName = exchangeMetadata.getString("name");
             this.ExchangeCoin = Coin;
             this.ExchangeCurrency = Currency;
+            this.Pairs = (String[]) exchangeMetadata.getJsonArray("pairs").toArray();
             this.ExchangeApiPath = exchangeMetadata.
                     getJsonObject("api").
                     getJsonObject(Coin).
