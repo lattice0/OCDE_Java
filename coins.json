@@ -1,14 +1,18 @@
 {
-  "BTC": {
-    "name": "Bitcoin",
+  "Bitcoin": {
+    "names": ["BTC"],
     "project_url": ["bitcoin.org"]
   },
-  "ETH": {
-    "name": "Ethereum",
+  "Ethereum": {
+    "names": ["ETH"],
     "project_url": ["ethereumproject.org"]
   },
-  "DASH": {
-    "name": "Dash",
+  "Dash": {
+    "names": ["DSH, DASH"],
     "project_url": ["dash.org"]
+  },
+  "Iota": {
+    "names": ["IOT, IOTA"],
+    "project_url": ["iota.org"]
   }
 }
