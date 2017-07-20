@@ -4,6 +4,7 @@
       "name":"Foxbit",
       "country":"Brazil",
       "url":"foxbit.com.br",
+      "pairs":[],
       "api":{
         "BTC": {"BRL": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"}
       }
@@ -21,6 +22,7 @@
       "name":"Mercado Bitcoin",
       "country":"Brazil",
       "url":"mercadobitcoin.com.br",
+      "pairs":[],
       "api":{
         "BTC":{"BRL": "mercadobitcoin.net/api/ticker"},
         "LTC":{"BRL": "mercadobitcoin.net/api/ticker_litecoin"}
@@ -32,6 +34,29 @@
     "buy":"ticker.buy",
     "sell":"ticker.sell",
     "volume_coin":"ticker.vol",
+    "volume_currency":""
+  },
+  "bitfinex":{
+    "meta": {
+      "name":"Bitfinex",
+      "country":"United States",
+      "url":"bitfinex.com",
+      "pairs":["ETH/USD","ETH/BTC","BTC/USD","LTC/USD","LTC/BTC",
+        "IOTA/USD","IOTA/BTC","IOTA/ETH","EOS/USD","EOS/BTC",
+        "EOS/ETH","ETC/USD","ETC/BTC","ZEC/USD","ZEC/BTC","SAN/USD",
+        "SAN/BTC","SAN/ETH","OMG/USD","OMG/BTC","OMG/ETH","DASH/USD",
+        "DASH/BTC","XRP/USD","XRP/BTC","XMR/USD","XMR/BTC","BCU/USD",
+        "BCU/BTC","RRT/USD","RRT/BTC","BCC/USD","BCC/BTC"],
+      "api":{
+        "pair":"api.bitfinex.com/v2/ticker/t{1}{2}"
+      }
+    },
+    "high":"8",
+    "low":"9",
+    "last":"6",
+    "buy":"",
+    "sell":"",
+    "volume_coin":"",
     "volume_currency":""
   }
 }

@@ -1,6 +1,8 @@
 package com.lucaszanella.JsonNavigator;
 
+import javax.json.JsonArray;
 import javax.json.JsonObject;
+import javax.json.JsonStructure;
 import javax.json.JsonValue;
 
 /**
@@ -22,27 +24,30 @@ public class JsonNavigator {
 
         The output of JsonValue Navigate("first_node.second_node.third_node", jsonObject) is "value"
      */
-    public static JsonValue Navigate(String path, JsonObject jsonObject) {
-        System.out.println("Navigating through " + path);
-        JsonObject o = jsonObject;
-        String[] nodes = path.split("\\."); //Do I really need to remove "" from the keys???
-        for (String node: nodes) {
-            //System.out.println("node: " + node);
-            node = node.replace("\"", "");
-            JsonValue.ValueType current = o.get(node).getValueType();
-            if (current.equals(JsonValue.ValueType.OBJECT)) {
-                o = o.getJsonObject(node);
-                System.out.println("is object, new o = " + o);
-            } else if (current.equals(JsonValue.ValueType.STRING)) {
-                return o.getJsonString(node);
-            } else if (current.equals(JsonValue.ValueType.NUMBER)) {
-                //System.out.println("is number: " + o.getJsonNumber(node));
-                return o.getJsonNumber(node);
-            } else if (current.equals(JsonValue.ValueType.ARRAY)) {
-                //deal with this
-            }
 
+    public static JsonValue Navigate(String path, JsonStructure jsonStructure) {
+        System.out.println("Navigating through " + path);
+        JsonValue current = jsonStructure;
+        String[] nodes = path.split("\\.");
+        for (String node: nodes) {
+            System.out.println("node: " + node);
+            if (current.getValueType().equals(JsonValue.ValueType.OBJECT)) {
+                current = ((JsonObject) current).get(node);
+                System.out.println("is object, new o = " + current);
+            } else
+            if (current.getValueType().equals(JsonValue.ValueType.ARRAY)) {
+                System.out.println("parsing " + node + " to number");
+                current = ((JsonArray) current).get(Integer.parseInt(node));
+                System.out.println("is array, new o = " + current);
+            }
         }
-        return null;
+        JsonValue.ValueType t = current.getValueType();
+        if (t.equals(JsonValue.ValueType.NUMBER) || t.equals(JsonValue.ValueType.STRING) ||
+            t.equals(JsonValue.ValueType.TRUE)   || t.equals(JsonValue.ValueType.FALSE)) {
+            return current;
+        } else {
+            //Return if did not reach a literal or throw exception? I'll let you decide
+            return current;
+        }
     }
 }
