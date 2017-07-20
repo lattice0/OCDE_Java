@@ -7,9 +7,17 @@
     "names": ["ETH"],
     "project_url": ["ethereumproject.org"]
   },
+  "Litecoin": {
+    "names": ["LTC"],
+    "project_url": ["litecoin.org"]
+  },
   "Dash": {
     "names": ["DSH, DASH"],
     "project_url": ["dash.org"]
+  },
+  "Ripple": {
+    "names": ["XRP"],
+    "project_url": ["ripple.com"]
   },
   "Iota": {
     "names": ["IOT, IOTA"],
