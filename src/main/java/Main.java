@@ -18,6 +18,8 @@ public class Main {
         // Prints "Hello, World" to the terminal window.
         System.out.println("CryptoPOS");
         try {
+            System.out.println(ExchangeRequester.ReplaceApiUrl("api.bitfinex.com/v2/ticker/t{0}{1}",
+                    new String[]{"BTC", "USD"}));
             //Exchanges
             JsonStructure exchanges = JsonReader.ReadFile("exchanges.json");
             String selectedExchangeName = ((JsonObject) exchanges).

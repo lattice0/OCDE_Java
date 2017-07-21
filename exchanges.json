@@ -5,7 +5,6 @@
       "country": "Brazil",
       "url": "foxbit.com.br",
       "pairs": [],
-      "exceptions": [],
       "api": {
         "bitcoin/real": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"
       }
@@ -24,7 +23,6 @@
       "country": "Brazil",
       "url": "mercadobitcoin.com.br",
       "pairs": [],
-      "exceptions": [],
       "api": {
         "bitcoin/real": "mercadobitcoin.net/api/ticker",
         "litecoin/real": "mercadobitcoin.net/api/ticker_litecoin"
@@ -50,14 +48,61 @@
         "dash/bitcoin", "ripple/dollar", "ripple/bitcoin", "monero/dollar", "monero/bitcoin", "BCU/dollar",
         "BCU/bitcoin", "RRT/dollar", "RRT/bitcoin", "BCC/dollar", "BCC/bitcoin"
       ],
-      "exceptions": [],
       "api": {
-        "pair": "api.bitfinex.com/v2/ticker/t{1}{2}"
+        "pair": {
+          "url":"api.bitfinex.com/v2/ticker/t{0}{1}",
+          "substitute_by":"tokens",
+          "exceptions":[]
+        }
       }
     },
     "high": "8",
     "low": "9",
     "last": "6",
+    "buy": "",
+    "sell": "",
+    "volume_coin": "",
+    "volume_currency": ""
+  },
+  "coinbase": {
+    "meta": {
+      "name": "Coinbase",
+      "country": "United States",
+      "url": "coinbase.com",
+      "pairs": [],
+      "api": {
+        "bitcoin/dollar": "api.coinbase.com/v2/prices/spot?currency=USD"
+      }
+    },
+    "high": "",
+    "low": "",
+    "last": "data.high",
+    "buy": "",
+    "sell": "",
+    "volume_coin": "",
+    "volume_currency": ""
+  },
+  "poloniex": {
+    "meta": {
+      "name": "Poloniex",
+      "country": "United States",
+      "url": "poloniex.com",
+      "pairs": ["bitcoin/litecoin", "bitcoin/monero", "bitcoin/ripple", "bitcoin/zcash"],
+      "api": {
+        "all": {
+          "url":"poloniex.com/public?command=returnTicker",
+          "map":{
+            "bitcoin/litecoin":"BTC_LTC",
+            "bitcoin/monero":"BTC_XMR",
+            "bitcoin/ripple":"BTC_XRP",
+            "bitcoin/zcash":"BTC_ZEC"
+          }
+        }
+      }
+    },
+    "high": "highestBid",
+    "low": "lowestAsk",
+    "last": "last",
     "buy": "",
     "sell": "",
     "volume_coin": "",

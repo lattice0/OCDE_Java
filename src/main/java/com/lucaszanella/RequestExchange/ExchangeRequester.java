@@ -10,6 +10,7 @@ import java.io.StringReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
 public class ExchangeRequester {
@@ -45,7 +46,14 @@ public class ExchangeRequester {
     /*
         Replaces the string "{n}" from url by the n-th string of stringsToInsert
      */
-    public String ReplaceApiUrl(String url, String[] stringsToInsert) {
+    public static String ReplaceApiUrl(String url, String[] stringsToInsert) {
+        int i = 0;
+        for (String s: stringsToInsert) {
+            System.out.println("replacing " + s);
+            url = url.replaceFirst(Pattern.quote("{"+String.valueOf(i)+"}"), s);
+            i++;
+            System.out.println(url);
+        }
         return url;
     }
 
@@ -63,7 +71,7 @@ public class ExchangeRequester {
             path = this.exchangeMetadata.getJsonObject("api").getString("pair");
             path = ReplaceApiUrl(path, new String[]{Coin1, Coin2});
         } else {
-            path = this.exchangeMetadata.getJsonObject("api").getJ;
+            path = this.exchangeMetadata.getJsonObject("api").toString();
         }
 
         Request okhttpApiRequester = new Request.Builder().
