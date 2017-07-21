@@ -1,26 +1,72 @@
 {
-  "Bitcoin": {
-    "names": ["BTC"],
-    "project_url": ["bitcoin.org"]
+  "crypto": {
+    "bitcoin": {
+      "name": "Bitcoin",
+      "token": [
+        "BTC"
+      ],
+      "project_url": [
+        "bitcoin.org"
+      ]
+    },
+    "ethereum": {
+      "name": "Ethereum",
+      "token": [
+        "ETH"
+      ],
+      "project_url": [
+        "ethereumproject.org"
+      ]
+    },
+    "litecoin": {
+      "name": "Litecoin",
+      "token": [
+        "LTC"
+      ],
+      "project_url": [
+        "litecoin.org"
+      ]
+    },
+    "dash": {
+      "name": "Dash",
+      "token": [
+        "DSH, DASH"
+      ],
+      "project_url": [
+        "dash.org"
+      ]
+    },
+    "ripple": {
+      "name": "Ripple",
+      "token": [
+        "XRP"
+      ],
+      "project_url": [
+        "ripple.com"
+      ]
+    },
+    "iota": {
+      "name": "Iota",
+      "token": [
+        "IOT, IOTA"
+      ],
+      "project_url": [
+        "iota.org"
+      ]
+    }
   },
-  "Ethereum": {
-    "names": ["ETH"],
-    "project_url": ["ethereumproject.org"]
-  },
-  "Litecoin": {
-    "names": ["LTC"],
-    "project_url": ["litecoin.org"]
-  },
-  "Dash": {
-    "names": ["DSH, DASH"],
-    "project_url": ["dash.org"]
-  },
-  "Ripple": {
-    "names": ["XRP"],
-    "project_url": ["ripple.com"]
-  },
-  "Iota": {
-    "names": ["IOT, IOTA"],
-    "project_url": ["iota.org"]
+  "fiat": {
+    "real": {
+      "name": "Brazillian Real",
+      "token": "BRL"
+    },
+    "dollar": {
+      "name": "United States Dollar",
+      "token": "USD"
+    },
+    "euro": {
+      "name": "Euro",
+      "token": "EUR"
+    }
   }
 }

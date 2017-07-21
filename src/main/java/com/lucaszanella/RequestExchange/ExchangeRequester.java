@@ -1,7 +1,7 @@
 package com.lucaszanella.RequestExchange;
 
 
-import com.lucaszanella.JsonNavigator.JsonNavigator;
+import com.lucaszanella.JsonUtilities.JsonNavigator;
 import okhttp3.*;
 
 import javax.json.*;
@@ -31,7 +31,7 @@ public class ExchangeRequester {
     /*
         Creates a new Exchange Requester based on the name of the exchange, the coin you want and the currency
      */
-    public ExchangeRequester(String Exchange, String Coin, String Currency) {
+    public ExchangeRequester(String Exchange) {
         try {
             Reader = new FileReader("exchanges.json");
             JsonReader jsonReader = Json.createReader(Reader);
@@ -57,7 +57,7 @@ public class ExchangeRequester {
     /*
         Does the actual price request, parses it and returns in the format "ExchangeInfo"
      */
-    public Map<String, Number> Request() throws Exception {
+    public Map<String, Number> Request(String Coin1, String Coin2) throws Exception {
         Response r = httpsClient.newCall(okhttpApiRequester).execute();
         String json = r.body().string();
         System.out.println(json);

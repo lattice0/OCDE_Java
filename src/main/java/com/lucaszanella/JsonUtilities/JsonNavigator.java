@@ -1,4 +1,4 @@
-package com.lucaszanella.JsonNavigator;
+package com.lucaszanella.JsonUtilities;
 
 import javax.json.JsonArray;
 import javax.json.JsonObject;
