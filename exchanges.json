@@ -7,9 +7,7 @@
       "pairs": [],
       "exceptions": [],
       "api": {
-        "BTC": {
-          "BRL": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"
-        }
+        "bitcoin/real": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"
       }
     },
     "high": "high",
@@ -28,12 +26,8 @@
       "pairs": [],
       "exceptions": [],
       "api": {
-        "BTC": {
-          "BRL": "mercadobitcoin.net/api/ticker"
-        },
-        "LTC": {
-          "BRL": "mercadobitcoin.net/api/ticker_litecoin"
-        }
+        "bitcoin/real": "mercadobitcoin.net/api/ticker",
+        "litecoin/real": "mercadobitcoin.net/api/ticker_litecoin"
       }
     },
     "high": "ticker.high",
@@ -49,12 +43,12 @@
       "name": "Bitfinex",
       "country": "United States",
       "url": "bitfinex.com",
-      "pairs": ["ETH/USD", "ETH/BTC", "BTC/USD", "LTC/USD", "LTC/BTC",
-        "IOTA/USD", "IOTA/BTC", "IOTA/ETH", "EOS/USD", "EOS/BTC",
-        "EOS/ETH", "ETC/USD", "ETC/BTC", "ZEC/USD", "ZEC/BTC", "SAN/USD",
-        "SAN/BTC", "SAN/ETH", "OMG/USD", "OMG/BTC", "OMG/ETH", "DASH/USD",
-        "DASH/BTC", "XRP/USD", "XRP/BTC", "XMR/USD", "XMR/BTC", "BCU/USD",
-        "BCU/BTC", "RRT/USD", "RRT/BTC", "BCC/USD", "BCC/BTC"
+      "pairs": ["ethereum/dollar", "ethereum/bitcoin", "bitcoin/dollar", "litecoin/dollar", "litecoin/bitcoin",
+        "iota/dollar", "iota/bitcoin", "iota/ethereum", "eos/dollar", "eos/bitcoin",
+        "eos/ethereum", "ethereum_classic/dollar", "ethereum_classic/bitcoin", "zcash/dollar", "zcash/bitcoin",
+        "SAN/dollar", "SAN/bitcoin", "SAN/ethereum", "OMG/dollar", "OMG/bitcoin", "OMG/ethereum", "dash/dollar",
+        "dash/bitcoin", "ripple/dollar", "ripple/bitcoin", "monero/dollar", "monero/bitcoin", "BCU/dollar",
+        "BCU/bitcoin", "RRT/dollar", "RRT/bitcoin", "BCC/dollar", "BCC/bitcoin"
       ],
       "exceptions": [],
       "api": {

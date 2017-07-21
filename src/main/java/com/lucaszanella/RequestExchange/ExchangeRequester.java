@@ -23,10 +23,8 @@ public class ExchangeRequester {
     //private ExchangeJsonModel Meta;
     private java.io.Reader Reader;
     private JsonObject exchangeObject;
-    private static OkHttpClient httpsClient = new OkHttpClient.Builder()
-            //.addNetworkInterceptor(new UserAgentInterceptor(userAgent))
-            .build();
-    private Request okhttpApiRequester;
+    private JsonObject exchangeMetadata;
+    private OkHttpClient httpsClient;
 
     /*
         Creates a new Exchange Requester based on the name of the exchange, the coin you want and the currency
@@ -37,27 +35,41 @@ public class ExchangeRequester {
             JsonReader jsonReader = Json.createReader(Reader);
             JsonObject exchangesList = jsonReader.readObject();
             this.exchangeObject = exchangesList.getJsonObject(Exchange);
-            JsonObject exchangeMetadata = exchangeObject.getJsonObject("meta");
+            this.exchangeMetadata = exchangeObject.getJsonObject("meta");
             this.ExchangeName = exchangeMetadata.getString("name");
-            this.ExchangeCoin = Coin;
-            this.ExchangeCurrency = Currency;
             this.Pairs = (String[]) exchangeMetadata.getJsonArray("pairs").toArray();
-            this.ExchangeApiPath = exchangeMetadata.
-                    getJsonObject("api").
-                    getJsonObject(Coin).
-                    getString(Currency);//POSSIBLE EXCEPTION HERE, TAKE CARE LATER
-            this.okhttpApiRequester = new Request.Builder().
-                    url(protocol + "://" + this.ExchangeApiPath).
-                    build();
         } catch (Exception e) {
             System.out.println("error... " + e); //Detail errors here
         }
+    }
+    /*
+        Replaces the string "{n}" from url by the n-th string of stringsToInsert
+     */
+    public String ReplaceApiUrl(String url, String[] stringsToInsert) {
+        return url;
     }
 
     /*
         Does the actual price request, parses it and returns in the format "ExchangeInfo"
      */
     public Map<String, Number> Request(String Coin1, String Coin2) throws Exception {
+        this.httpsClient = new OkHttpClient.Builder()
+                //.addNetworkInterceptor(new UserAgentInterceptor(userAgent))
+                .build();
+
+        String path;
+
+        if (this.Pairs.length>0) {
+            path = this.exchangeMetadata.getJsonObject("api").getString("pair");
+            path = ReplaceApiUrl(path, new String[]{Coin1, Coin2});
+        } else {
+            path = this.exchangeMetadata.getJsonObject("api").getJ;
+        }
+
+        Request okhttpApiRequester = new Request.Builder().
+                url(protocol + "://" + path).
+                build();
+
         Response r = httpsClient.newCall(okhttpApiRequester).execute();
         String json = r.body().string();
         System.out.println(json);
