@@ -1,9 +1,6 @@
 package com.lucaszanella.JsonUtilities;
 
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonStructure;
-import javax.json.JsonValue;
+import javax.json.*;
 
 /**
  * Created by Lucas Zanella on 19/07/17.
@@ -24,12 +21,21 @@ public class JsonNavigator {
 
         The output of JsonValue Navigate("first_node.second_node.third_node", jsonObject) is "value"
      */
-
+    public static Float JsonValueToFloat(JsonValue price) {
+        float value = 0;
+        if (price.getValueType().equals(JsonValue.ValueType.NUMBER)) {
+            value = ((JsonNumber) price).bigDecimalValue().floatValue();
+        } else {
+            value = Float.parseFloat(((JsonString) price).getString());
+        }
+        return value;
+    }
     public static JsonValue Navigate(String path, JsonStructure jsonStructure) {
         //System.out.println("Navigating through " + path);
         JsonValue current = jsonStructure;
         String[] nodes = path.split("\\.");
         for (String node: nodes) {
+            //System.out.println("node: "+node);
             if (current.getValueType().equals(JsonValue.ValueType.OBJECT)) {
                 current = ((JsonObject) current).get(node);
                 //System.out.println("is object, new o = " + current);

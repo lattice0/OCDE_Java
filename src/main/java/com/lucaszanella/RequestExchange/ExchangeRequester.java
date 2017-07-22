@@ -6,6 +6,7 @@ import com.lucaszanella.JsonUtilities.JsonReader;
 import okhttp3.*;
 
 import javax.json.*;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class ExchangeRequester {
             path = this.exchangeObject.getJsonObject("api").getString(Coin1+"/"+Coin2);
             System.out.println("path is "+path);
         } else if (this.type.equals(VARIABLES_IN_JSON_SAME_URL)) {
-            path = this.exchangeObject.getString("api");
+            path = this.exchangeObject.getString("endpoint");
             System.out.println("path is "+path);
         }
         Request okhttpApiRequester = new Request.Builder().
@@ -87,12 +88,26 @@ public class ExchangeRequester {
             navigating in ticker and then high, so MercadoBitcoin's entry
             in exchanges.json says that 'high' is located at 'ticker.high'
          */
-        if (this.type.equals(VARIABLES_IN_URL_SAME_STRUCTUE)) {
+        if (this.type.equals(VARIABLES_IN_URL_SAME_STRUCTUE)) {//A
             int i = 0;
             for (JsonValue entry : this.exchangeObject.getJsonArray("structure")) {
-                float value = Float.parseFloat(
-                        JsonNavigator.Navigate(((JsonString) entry).getString(),
-                        jsonResponse).toString());
+                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
+                float value = JsonNavigator.JsonValueToFloat(price);
+                if (i<structure.length) {
+                    exchangeInfo.put(structure[i], value);
+                    i++;
+                } else {
+                    break;
+                }
+            }
+        } else if (this.type.equals(VARIABLES_IN_URL))  {//B
+
+        } else if (this.type.equals(VARIABLES_IN_JSON_SAME_URL))  {//C
+            System.out.println("type c");
+            int i = 0;
+            for (JsonValue entry : this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2)) {
+                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
+                float value = JsonNavigator.JsonValueToFloat(price);
                 if (i<structure.length) {
                     exchangeInfo.put(structure[i], value);
                     i++;

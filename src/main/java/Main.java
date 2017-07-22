@@ -10,9 +10,9 @@ import java.io.StringReader;
 import java.util.Map;
 
 public class Main {
-    public static String Exchange = "foxbit";
+    public static String Exchange = "poloniex";
     public static String Crypto = "bitcoin";
-    public static String Fiat = "real";
+    public static String Fiat = "dollar";
 
     public static void main(String[] args) {
         // Prints "Hello, World" to the terminal window.
@@ -48,11 +48,11 @@ public class Main {
 
             */
             ExchangeRequester r = new ExchangeRequester(Exchange);
-            System.out.println("lets request");
+            System.out.println("requesting...");
             Map<String, Number> json = r.Request(Crypto, Fiat);
             System.out.println("json is :" + json);
         } catch (Exception e) {
-            System.out.println("error: " + e);
+            System.out.println("error: " + e.getMessage());
         }
 
 
