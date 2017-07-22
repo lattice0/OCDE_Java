@@ -63,5 +63,16 @@
       "dash/dollar": ["USDT_DASH.highestBid", "USDT_DASH.lowestAsk", "USDT_DASH.last"],
       "monero/dollar": ["USDT_XMR.highestBid", "USDT_XMR.lowestAsk", "USDT_XMR.last"]
     }
+  },
+  "kraken": {
+    "name": "Kraken",
+    "countries": ["US"],
+    "url": "kraken.com",
+    "type": "B",
+    "api": {
+      "bitcoin/euro": ["https://api.kraken.com/0/public/Ticker?pair=BTCEUR",["result.XXBTZEUR.h","result.XXBTZEUR.l","result.XXBTZEUR.c"]],
+      "dash/euro": ["https://api.kraken.com/0/public/Ticker?pair=DASHEUR",["result.DASHEUR.h","result.DASHEUR.l","result.DASHEUR.c"]]
+
+    }
   }
 }

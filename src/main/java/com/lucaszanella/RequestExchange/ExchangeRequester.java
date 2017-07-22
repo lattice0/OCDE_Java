@@ -89,6 +89,7 @@ public class ExchangeRequester {
             in exchanges.json says that 'high' is located at 'ticker.high'
          */
         if (this.type.equals(VARIABLES_IN_URL_SAME_STRUCTUE)) {//A
+            System.out.println("type A");
             int i = 0;
             for (JsonValue entry : this.exchangeObject.getJsonArray("structure")) {
                 JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
@@ -101,9 +102,20 @@ public class ExchangeRequester {
                 }
             }
         } else if (this.type.equals(VARIABLES_IN_URL))  {//B
-
+            System.out.println("type B");
+            int i = 0;
+            for (JsonValue entry : this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2)) {
+                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
+                float value = JsonNavigator.JsonValueToFloat(price);
+                if (i<structure.length) {
+                    exchangeInfo.put(structure[i], value);
+                    i++;
+                } else {
+                    break;
+                }
+            }
         } else if (this.type.equals(VARIABLES_IN_JSON_SAME_URL))  {//C
-            System.out.println("type c");
+            System.out.println("type C");
             int i = 0;
             for (JsonValue entry : this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2)) {
                 JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
