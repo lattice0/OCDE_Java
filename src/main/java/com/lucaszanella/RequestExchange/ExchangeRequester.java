@@ -1,30 +1,26 @@
 package com.lucaszanella.RequestExchange;
 
 
-import com.lucaszanella.JsonUtilities.JsonNavigator;
+import com.lucaszanella.JsonUtilities.*;
+import com.lucaszanella.JsonUtilities.JsonReader;
 import okhttp3.*;
 
 import javax.json.*;
-import java.io.FileReader;
-import java.io.StringReader;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 
 public class ExchangeRequester {
     private static String protocol = "https"; //Always https, http not allowed >:)
-    private String ExchangeApiDomain;
-    private String ExchangeName;
-    private String ExchangeCoin;
-    private String ExchangeApiPath;
-    private String ExchangeCurrency;
-    private String[] Pairs;
+    private static final String VARIABLES_IN_URL_SAME_STRUCTUE = "A";
+    private static final String VARIABLES_IN_URL = "B";
+    private static final String VARIABLES_IN_JSON_SAME_URL = "C";
+    private static final String[] structure = {"high", "low", "last", "buy", "sell"};
+
+    private String type;
     //private ExchangeJsonModel Meta;
     private java.io.Reader Reader;
     private JsonObject exchangeObject;
-    private JsonObject exchangeMetadata;
     private OkHttpClient httpsClient;
 
     /*
@@ -32,13 +28,9 @@ public class ExchangeRequester {
      */
     public ExchangeRequester(String Exchange) {
         try {
-            Reader = new FileReader("exchanges.json");
-            JsonReader jsonReader = Json.createReader(Reader);
-            JsonObject exchangesList = jsonReader.readObject();
+            JsonObject exchangesList = JsonReader.ReadFile("exchanges_v2.json").asJsonObject();
             this.exchangeObject = exchangesList.getJsonObject(Exchange);
-            this.exchangeMetadata = exchangeObject.getJsonObject("meta");
-            this.ExchangeName = exchangeMetadata.getString("name");
-            this.Pairs = (String[]) exchangeMetadata.getJsonArray("pairs").toArray();
+            this.type = this.exchangeObject.getString("type");
         } catch (Exception e) {
             System.out.println("error... " + e); //Detail errors here
         }
@@ -46,6 +38,7 @@ public class ExchangeRequester {
     /*
         Replaces the string "{n}" from url by the n-th string of stringsToInsert
      */
+    /*
     public static String ReplaceApiUrl(String url, String[] stringsToInsert) {
         int i = 0;
         for (String s: stringsToInsert) {
@@ -56,6 +49,7 @@ public class ExchangeRequester {
         }
         return url;
     }
+    */
 
     /*
         Does the actual price request, parses it and returns in the format "ExchangeInfo"
@@ -64,16 +58,17 @@ public class ExchangeRequester {
         this.httpsClient = new OkHttpClient.Builder()
                 //.addNetworkInterceptor(new UserAgentInterceptor(userAgent))
                 .build();
-
-        String path;
-
-        if (this.Pairs.length>0) {
-            path = this.exchangeMetadata.getJsonObject("api").getString("pair");
-            path = ReplaceApiUrl(path, new String[]{Coin1, Coin2});
-        } else {
-            path = this.exchangeMetadata.getJsonObject("api").toString();
+        String path = "";
+        if (this.type.equals(VARIABLES_IN_URL_SAME_STRUCTUE)) {
+            path = this.exchangeObject.getJsonObject("api").getString(Coin1+"/"+Coin2);
+            System.out.println("path is "+path);
+        } else if (this.type.equals(VARIABLES_IN_URL)) {
+            path = this.exchangeObject.getJsonObject("api").getString(Coin1+"/"+Coin2);
+            System.out.println("path is "+path);
+        } else if (this.type.equals(VARIABLES_IN_JSON_SAME_URL)) {
+            path = this.exchangeObject.getString("api");
+            System.out.println("path is "+path);
         }
-
         Request okhttpApiRequester = new Request.Builder().
                 url(protocol + "://" + path).
                 build();
@@ -82,8 +77,7 @@ public class ExchangeRequester {
         String json = r.body().string();
         System.out.println(json);
 
-        JsonReader jsonReader = Json.createReader(new StringReader(json));
-        JsonObject jsonObject = jsonReader.readObject();
+        JsonStructure jsonResponse = JsonReader.ReadString(json);
 
         Map<String, Number> exchangeInfo = new HashMap<>();
         /*
@@ -93,23 +87,19 @@ public class ExchangeRequester {
             navigating in ticker and then high, so MercadoBitcoin's entry
             in exchanges.json says that 'high' is located at 'ticker.high'
          */
-        for (Map.Entry<String, JsonValue> entry : this.exchangeObject.entrySet()) {
-            String key = entry.getKey();
-            if (!key.equals("meta")) { //Ignore the key 'meta', we're interested in the high,low,... keys
-                JsonString value = this.exchangeObject.getJsonString(key);
-                if (!"".equals(value.getString())) {
-                    JsonValue jsonValue = JsonNavigator.Navigate(value.getString(), jsonObject);
-                    if (jsonValue!=null && jsonValue.getValueType().equals(JsonValue.ValueType.NUMBER)) {
-                        Number n = ((JsonNumber) jsonValue).doubleValue();
-                        exchangeInfo.put(key, n);
-                    } else if (jsonValue==null){
-                        //Null returned, couldn't navigate to this on json
-                    } else {
-                        //Throw error, no number returned or can't be converted to number
-                    }
+        if (this.type.equals(VARIABLES_IN_URL_SAME_STRUCTUE)) {
+            int i = 0;
+            for (JsonValue entry : this.exchangeObject.getJsonArray("structure")) {
+                float value = Float.parseFloat(
+                        JsonNavigator.Navigate(((JsonString) entry).getString(),
+                        jsonResponse).toString());
+                if (i<structure.length) {
+                    exchangeInfo.put(structure[i], value);
+                    i++;
+                } else {
+                    break;
                 }
             }
-            //System.out.println("key: " + key + ", value: " + value);
         }
         return exchangeInfo;
     }

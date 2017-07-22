@@ -26,19 +26,18 @@ public class JsonNavigator {
      */
 
     public static JsonValue Navigate(String path, JsonStructure jsonStructure) {
-        System.out.println("Navigating through " + path);
+        //System.out.println("Navigating through " + path);
         JsonValue current = jsonStructure;
         String[] nodes = path.split("\\.");
         for (String node: nodes) {
-            System.out.println("node: " + node);
             if (current.getValueType().equals(JsonValue.ValueType.OBJECT)) {
                 current = ((JsonObject) current).get(node);
-                System.out.println("is object, new o = " + current);
+                //System.out.println("is object, new o = " + current);
             } else
             if (current.getValueType().equals(JsonValue.ValueType.ARRAY)) {
-                System.out.println("parsing " + node + " to number");
+                //System.out.println("parsing " + node + " to number");
                 current = ((JsonArray) current).get(Integer.parseInt(node));
-                System.out.println("is array, new o = " + current);
+                //System.out.println("is array, new o = " + current);
             }
         }
         JsonValue.ValueType t = current.getValueType();

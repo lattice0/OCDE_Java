@@ -3,7 +3,7 @@
     "name": "Foxbit",
     "countries": ["BR"],
     "url": "foxbit.com.br",
-    "type": "variables_in_url_same_structure",
+    "type": "A",
     "structure": ["high", "low", "last", "buy", "sell"],
     "api": {
       "bitcoin/real": "api.blinktrade.com/api/v1/BRL/ticker?crypto_currency=BTC"
@@ -13,7 +13,7 @@
     "name": "Mercado Bitcoin",
     "countries": ["BR"],
     "url": "mercadobitcoin.com.br",
-    "type": "variables_in_url_same_structure",
+    "type": "A",
     "structure": ["ticker.high", "ticker.low", "ticker.last", "ticker.buy", "ticker.sell"],
     "api": {
       "bitcoin/real": "mercadobitcoin.net/api/ticker",
@@ -24,7 +24,7 @@
     "name": "Bitfinex",
     "countries": ["US"],
     "url": "bitfinex.com",
-    "type": "variables_in_url_same_structure",
+    "type": "A",
     "structure": ["8", "9", "6"],
     "api": {
       "bitcoin/dollar": "api.bitfinex.com/v2/ticker/tBTCUSD",
@@ -42,7 +42,7 @@
     "name": "Coinbase",
     "countries": ["US"],
     "url": "coinbase.com",
-    "type": "variables_in_url_same_structure",
+    "type": "A",
     "structure": ["", "", "data.high"],
     "api": {
       "bitcoin/dollar": "api.coinbase.com/v2/prices/spot?currency=USD"
@@ -52,7 +52,7 @@
     "name": "Poloniex",
     "countries": ["US"],
     "url": "poloniex.com",
-    "type": "variables_in_json",
+    "type": "C",
     "endpoint": "poloniex.com/public?command=returnTicker",
     "api": {
       "bitcoin/dollar": ["USDT_BTC.highestBid", "USDT_BTC.lowestAsk", "USDT_BTC.last"],
@@ -61,8 +61,7 @@
       "zcash/dollar": ["USDT_ZEC.highestBid", "USDT_ZEC.lowestAsk", "USDT_ZEC.last"],
       "litecoin/dollar": ["USDT_LTC.highestBid", "USDT_LTC.lowestAsk", "USDT_LTC.last"],
       "dash/dollar": ["USDT_DASH.highestBid", "USDT_DASH.lowestAsk", "USDT_DASH.last"],
-      "monero/dollar": ["USDT_XMR.highestBid", "USDT_XMR.lowestAsk", "USDT_XMR.last"],
-
+      "monero/dollar": ["USDT_XMR.highestBid", "USDT_XMR.lowestAsk", "USDT_XMR.last"]
     }
   }
 }

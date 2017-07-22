@@ -18,6 +18,7 @@ public class Main {
         // Prints "Hello, World" to the terminal window.
         System.out.println("CryptoPOS");
         try {
+            /*
             System.out.println(ExchangeRequester.ReplaceApiUrl("api.bitfinex.com/v2/ticker/t{0}{1}",
                     new String[]{"BTC", "USD"}));
             //Exchanges
@@ -45,11 +46,11 @@ public class Main {
                     toString();
             System.out.println("Selected fiat: " + selectedFiatName);
 
-
+            */
             ExchangeRequester r = new ExchangeRequester(Exchange);
-
-            //Map<String, Number> json = r.Request();
-            //System.out.println("json is :" + json);
+            System.out.println("lets request");
+            Map<String, Number> json = r.Request(Crypto, Fiat);
+            System.out.println("json is :" + json);
         } catch (Exception e) {
             System.out.println("error: " + e);
         }
