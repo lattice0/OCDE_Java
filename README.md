@@ -1,8 +1,8 @@
 # CryptoPOS
 
-Point Of Sale app that displays QR Code with invoice for cryptocurrencies. Any exchange and cryptocurrency can be added
+Point Of Sale app that displays QR Code with invoice for cryptocurrencies. Any exchange and cryptocurrency can be added. How? There's a file called ```exchanges.json``` which describe how to fetch data from each exchange listed in there. If you exchange or coin is not supported, you just add it there and the program will list it as an option.
 
-# How to add new cryptocurrencies
+# How to add new exchanges and cryptocurrencies
 
 There are 3 types of json responses you'll encounter while digging through the API of an Exchange:
 
@@ -33,19 +33,19 @@ This is the entire json that describes how to get prices from Mercado Bitcoin's 
   }
 ```
 
-See how easy it is, you just have to specify in the array "structure" where to locate, in order, the itens: highest price, lowest price, last price, etc. The rest is self explanatory.
+See how easy it is, you just have to specify in the array ```structure``` where to locate, in order, the itens: highest price, lowest price, last price, etc. The rest is self explanatory.
 
 The second type of document is:
 
 ```VARIABLES_IN_URL``` (type "B")
 
 In this example, the URLs still have the variables for which coin pair you want to retrieve information, but each request has its own structure. Believe me, I had to acknowledge this model just because of the Kraken exchange. Let's see its response for https://api.kraken.com/0/public/Ticker?pair=XBTUSD
-
 ```
+
 {"error":[],"result":{"XXBTZUSD":{"a":["2816.19600","1","1.000"],"b":["2805.43800","1","1.000"],"c":["2805.43800","0.10037796"],"v":["3234.19701737","8708.72759268"],"p":["2752.85779","2720.08507"],"t":[6954,18485],"l":["2651.96100","2614.70000"],"h":["2836.00000","2836.00000"],"o":"2670.00000"}}}
 ```
 
-It has its own structure for each coin, just because of that "XXBTZUSD" key, so for each URL I had to specify the structure:
+It has its own structure for each coin, just because of that ```XXBTZUSD``` key, so for each URL I had to specify the structure:
 
 ```
 "kraken": {
