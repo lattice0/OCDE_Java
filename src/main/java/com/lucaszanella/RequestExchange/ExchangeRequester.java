@@ -64,7 +64,7 @@ public class ExchangeRequester {
             path = this.exchangeObject.getJsonObject("api").getString(Coin1+"/"+Coin2);
             System.out.println("path is "+path);
         } else if (this.type.equals(VARIABLES_IN_URL)) {
-            path = this.exchangeObject.getJsonObject("api").getString(Coin1+"/"+Coin2);
+            path = this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2).getString(0);
             System.out.println("path is "+path);
         } else if (this.type.equals(VARIABLES_IN_JSON_SAME_URL)) {
             path = this.exchangeObject.getString("endpoint");
@@ -104,7 +104,8 @@ public class ExchangeRequester {
         } else if (this.type.equals(VARIABLES_IN_URL))  {//B
             System.out.println("type B");
             int i = 0;
-            for (JsonValue entry : this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2)) {
+            JsonArray a = this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2);
+            for (JsonValue entry : a.getJsonArray(1)) {
                 JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
                 float value = JsonNavigator.JsonValueToFloat(price);
                 if (i<structure.length) {

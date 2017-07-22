@@ -10,7 +10,7 @@ import java.io.StringReader;
 import java.util.Map;
 
 public class Main {
-    public static String Exchange = "poloniex";
+    public static String Exchange = "kraken";
     public static String Crypto = "bitcoin";
     public static String Fiat = "dollar";
 
