@@ -47,7 +47,7 @@ public class Main {
             System.out.println("Selected fiat: " + selectedFiatName);
 
             */
-            ExchangeRequester r = new ExchangeRequester(Exchange);
+            ExchangeRequester r = new ExchangeRequester(Exchange, "exchanges.json");
             System.out.println("requesting...");
             Map<String, Number> json = r.Request(Crypto, Fiat);
             System.out.println("json is :" + json);

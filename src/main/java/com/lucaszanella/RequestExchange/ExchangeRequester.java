@@ -27,9 +27,9 @@ public class ExchangeRequester {
     /*
         Creates a new Exchange Requester based on the name of the exchange, the coin you want and the currency
      */
-    public ExchangeRequester(String Exchange) {
+    public ExchangeRequester(String Exchange, String exchangesJsonPath) {
         try {
-            JsonObject exchangesList = JsonReader.ReadFile("exchanges_v2.json").asJsonObject();
+            JsonObject exchangesList = JsonReader.ReadFile(exchangesJsonPath).asJsonObject();
             this.exchangeObject = exchangesList.getJsonObject(Exchange);
             this.type = this.exchangeObject.getString("type");
         } catch (Exception e) {
