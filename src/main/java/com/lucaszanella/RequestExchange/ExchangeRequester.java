@@ -21,6 +21,11 @@ public class ExchangeRequester {
     private String type;
     private JsonObject exchangeObject;
 
+    public static Set<String> listExchanges(String path) throws Exception {
+        JsonObject exchangesList = JsonReader.ReadFile(path).asJsonObject();
+        return exchangesList.keySet();
+    }
+
     /*
         Creates a new Exchange Requester based on the name of the exchange, the coin you want and the currency
      */
