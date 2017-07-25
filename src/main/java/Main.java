@@ -1,6 +1,9 @@
 import com.lucaszanella.JsonUtilities.*;
 import com.lucaszanella.RequestExchange.ExchangeInfo;
 import com.lucaszanella.RequestExchange.ExchangeRequester;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
 import javax.json.JsonObject;
@@ -11,8 +14,8 @@ import java.util.Map;
 
 public class Main {
     public static String Exchange = "kraken";
-    public static String Crypto = "bitcoin";
-    public static String Fiat = "dollar";
+    public static String Coin1 = "bitcoin";
+    public static String Coin2 = "dollar";
 
     public static void main(String[] args) {
         // Prints "Hello, World" to the terminal window.
@@ -47,10 +50,20 @@ public class Main {
             System.out.println("Selected fiat: " + selectedFiatName);
 
             */
-            ExchangeRequester r = new ExchangeRequester(Exchange, "exchanges.json");
+            ExchangeRequester r = new ExchangeRequester(Exchange, "ODCE/exchanges.json");
+            System.out.println(r.getPairs());
+            Request api = new Request.Builder().
+                    url("https://"+r.getPath(Coin1, Coin2)).
+                    build();
+            System.out.println(api);
             System.out.println("requesting...");
-            Map<String, Number> json = r.Request(Crypto, Fiat);
-            System.out.println("json is :" + json);
+            String response = new OkHttpClient.Builder().
+                                build().
+                                newCall(api).
+                                execute().body().string();
+            System.out.println(response);
+            ExchangeInfo p = r.interpretResponse(response, Coin1, Coin2);
+            System.out.println("price is :" + p.price);
         } catch (Exception e) {
             System.out.println("error: " + e.getMessage());
         }

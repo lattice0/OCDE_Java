@@ -3,62 +3,35 @@ package com.lucaszanella.RequestExchange;
 
 import com.lucaszanella.JsonUtilities.*;
 import com.lucaszanella.JsonUtilities.JsonReader;
-import okhttp3.*;
 
 import javax.json.*;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 
 public class ExchangeRequester {
-    private static String protocol = "https"; //Always https, http not allowed >:)
     private static final String VARIABLES_IN_URL_SAME_STRUCTUE = "A";
     private static final String VARIABLES_IN_URL = "B";
     private static final String VARIABLES_IN_JSON_SAME_URL = "C";
     private static final String[] structure = {"high", "low", "last", "buy", "sell"};
 
     private String type;
-    //private ExchangeJsonModel Meta;
-    private java.io.Reader Reader;
     private JsonObject exchangeObject;
-    private OkHttpClient httpsClient;
 
     /*
         Creates a new Exchange Requester based on the name of the exchange, the coin you want and the currency
      */
-    public ExchangeRequester(String Exchange, String exchangesJsonPath) {
-        try {
-            JsonObject exchangesList = JsonReader.ReadFile(exchangesJsonPath).asJsonObject();
-            this.exchangeObject = exchangesList.getJsonObject(Exchange);
-            this.type = this.exchangeObject.getString("type");
-        } catch (Exception e) {
-            System.out.println("error... " + e); //Detail errors here
-        }
-    }
-    /*
-        Replaces the string "{n}" from url by the n-th string of stringsToInsert
-     */
-    /*
-    public static String ReplaceApiUrl(String url, String[] stringsToInsert) {
-        int i = 0;
-        for (String s: stringsToInsert) {
-            System.out.println("replacing " + s);
-            url = url.replaceFirst(Pattern.quote("{"+String.valueOf(i)+"}"), s);
-            i++;
-            System.out.println(url);
-        }
-        return url;
-    }
-    */
+    public ExchangeRequester(String Exchange, String path) throws Exception{
+        JsonObject exchangesList = JsonReader.ReadFile(path).asJsonObject();
+        this.exchangeObject = exchangesList.getJsonObject(Exchange);
+        this.type = this.exchangeObject.getString("type");
 
-    /*
-        Does the actual price request, parses it and returns in the format "ExchangeInfo"
-     */
-    public Map<String, Number> Request(String Coin1, String Coin2) throws Exception {
-        this.httpsClient = new OkHttpClient.Builder()
-                //.addNetworkInterceptor(new UserAgentInterceptor(userAgent))
-                .build();
+    }
+
+    public String getPath(String Coin1, String Coin2) {
         String path = "";
         if (this.type.equals(VARIABLES_IN_URL_SAME_STRUCTUE)) {
             path = this.exchangeObject.getJsonObject("api").getString(Coin1+"/"+Coin2);
@@ -70,15 +43,15 @@ public class ExchangeRequester {
             path = this.exchangeObject.getString("endpoint");
             System.out.println("path is "+path);
         }
-        Request okhttpApiRequester = new Request.Builder().
-                url(protocol + "://" + path).
-                build();
+        return path;
+    }
 
-        Response r = httpsClient.newCall(okhttpApiRequester).execute();
-        String json = r.body().string();
-        System.out.println(json);
+    public Set<String> getPairs() {
+        return this.exchangeObject.getJsonObject("api").keySet();
+    }
 
-        JsonStructure jsonResponse = JsonReader.ReadString(json);
+    public ExchangeInfo interpretResponse(String jsonResponse, String Coin1, String Coin2) throws Exception{
+        JsonStructure structureResponse = JsonReader.ReadString(jsonResponse);
 
         Map<String, Number> exchangeInfo = new HashMap<>();
         /*
@@ -92,7 +65,7 @@ public class ExchangeRequester {
             System.out.println("type A");
             int i = 0;
             for (JsonValue entry : this.exchangeObject.getJsonArray("structure")) {
-                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
+                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), structureResponse);
                 float value = JsonNavigator.JsonValueToFloat(price);
                 if (i<structure.length) {
                     exchangeInfo.put(structure[i], value);
@@ -106,7 +79,7 @@ public class ExchangeRequester {
             int i = 0;
             JsonArray a = this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2);
             for (JsonValue entry : a.getJsonArray(1)) {
-                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
+                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), structureResponse);
                 float value = JsonNavigator.JsonValueToFloat(price);
                 if (i<structure.length) {
                     exchangeInfo.put(structure[i], value);
@@ -119,7 +92,7 @@ public class ExchangeRequester {
             System.out.println("type C");
             int i = 0;
             for (JsonValue entry : this.exchangeObject.getJsonObject("api").getJsonArray(Coin1+"/"+Coin2)) {
-                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), jsonResponse);
+                JsonValue price = JsonNavigator.Navigate(((JsonString) entry).getString(), structureResponse);
                 float value = JsonNavigator.JsonValueToFloat(price);
                 if (i<structure.length) {
                     exchangeInfo.put(structure[i], value);
@@ -129,6 +102,10 @@ public class ExchangeRequester {
                 }
             }
         }
-        return exchangeInfo;
+        ExchangeInfo r = new ExchangeInfo();
+        r.Coin1 = Coin1;
+        r.Coin2 = Coin2;
+        r.price = exchangeInfo;
+        return r;
     }
 }
